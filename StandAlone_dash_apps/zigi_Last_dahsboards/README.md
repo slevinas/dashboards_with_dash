@@ -1,6 +1,7 @@
 ![multipage-dash-app]()
 
-[![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/built-by-developers.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com) [![forthebadge](https://forthebadge.com/images/badges/uses-badges.svg)](https://forthebadge.com) 
+[[<img src="./assets/avataaars.png" alt="MarineGEO circle logo" style="height: 100px; width:100px;"/>]]
+
 
 # Multipage Dash Application 💻
 

@@ -1,6 +1,6 @@
 ![multipage-dash-app]()
 
-[![vvvc](multipage-dash-app/assets/avataaars.png)] 
+[<img src="./assets/avataaars.png" alt="MarineGEO circle logo" style="height: 100px; width:100px;"/>] 
 
 # Multipage Dash Application 💻
 
