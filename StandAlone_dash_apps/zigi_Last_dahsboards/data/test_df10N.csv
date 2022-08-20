@@ -1,0 +1,84 @@
+Tag,Query,g_size
+Application.models.SurveyUser.create( ) -> [insert],"								select insert_survey_response (
+									$1,
+									$2,
+									$3,
+									$4
+								) as",8113
+Application.models.User.getUserSecurity( ) -> userQuery,"				select	u.security,
+						u.sudo_retain_user_security,
+						sudo_user.security as sudo_security
+				from	users u
+				left outer join users as sudo_user on sudo_user.pk_user_id = u.sudo_as_fk_user_id
+				where	u.pk_user_id =",5142
+Application.models.SurveyUser.getResponseTextByResponseId( ) -> responseQuery,"	  				select	res_value.""Predicate_V1_Value"" as response_value
+					from 	""Resource"" as res_value
+					join ""Resource"" as object_value_row on res_value.""fk_SurveyUser_ID"" in ($1)
+						and res_value.""Subject_fk_Schema_ID"" = 134
+						and object_value_row.""fk_SurveyUser_ID"" in ($2)
+						and object_value_row.""Subject_fk_Schema_ID"" = 133
+						and res_value.""Object_fk_Resource_ID"" = object_value_row.""Object_fk_Resource_ID""
+					where 	object_value_row.""Predicate_V1_Value_fk_Resource_ID"" in",4444
+Application.models.Messaging.getPostTypeInfo( ) -> postTypeQuery,"				select	mptcr.pk_message_post_type_company_role_id,
+						mptcr.fk_message_post_type_id,
+						mptcr.fk_medserviceprovidertype_id,
+						mptcr.medside_recipient_type_id,
+						mptcr.roles_based_mailbox_name,
+						mptcr.send_email,
+						mptcr.show_in_compose_actions
+				from 	message_post_type_company_role mptcr
+				join medserviceprovidertype mspt on mspt.pk_medserviceprovidertype_id = mptcr.fk_medserviceprovidertype_id
+				where 	mptcr.fk_company_id = $1 
+					and mptcr.fk_message_post_type_id =",4053
+Application.models.Company.getCompanyConfig( ) -> companyConfigQuery,"				select	*
+				from	company_config
+				where	fk_company_id =",3811
+Application.models.User.getUserTimeZone( ) -> userQuery,"					select	case
+								when (u.user_time_zone_location is not null and u.user_time_zone_location <> '') 
+								then u.user_time_zone_location
+								when (phyuser.is_site_user is true and phyuser.user_time_zone_location is not null and phyuser.user_time_zone_location <> '') 
+								then phyuser.user_time_zone_location
+								when (sudophyuser.is_site_user is true and sudophyuser.user_time_zone_location is not null and sudophyuser.user_time_zone_location <> '') 
+								then sudophyuser.user_time_zone_location
+								when (c.time_zone_location is not null and c.time_zone_location <> '') 
+								then c.time_zone_location
+							else 'America/Los_Angeles'
+							end as time_zone_location
+					from	users u
+					join companies c on u.fk_company_id = c.pk_company_id
+					join users as phyuser on phyuser.pk_user_id = u.fk_user_id
+					left outer join users as sudophyuser on sudophyuser.pk_user_id = phyuser.sudo_as_fk_user_id
+					where 	u.pk_user_id =",2747
+Application.models.User.getUserCompanyId( ) -> userQuery,"				select	fk_company_id
+				from	users
+				where	pk_user_id =",2725
+Application.models.Messaging.getThreadUsersForList( ) -> usersQuery,"				select 	mt.patient_id,
+						mt.physician_id,
+						mt.from_id,
+						mt.to_id,
+						mtu.fk_message_thread_state,
+						mtu.date_created + interval '3 hours' as date_created,
+						u.pk_user_id,
+						u.fname,
+						u.lname,
+						u.name_suffix as title,
+						u.internalid,
+						u.security
+				from 	message_thread2 mt
+				join message_thread_users mtu on mtu.fk_message_thread_id = mt.pk_message_thread_id
+				join users u on u.pk_user_id = mtu.fk_user_id 
+					and u.fk_company_id = $1
+				where 	mt.pk_message_thread_id =",2578
+Application.helpers.SessionHelper.checkSession( ) -> userQuery,"							select	fk_company_id
+							from	users
+							where 	fk_company_id = $1 
+								and pk_user_id =",2205
+Application.models.Company.getCompanyLocale( ) -> localeQuery,"				select	supported_locale,
+						date_format,
+						jscalendar_date_format,
+						jscalendar_datetime_format,
+						flatpicker_date_format,
+						flatpicker_datetime_format,
+						todos_template_date_format
+				from	company_locale
+				where	fk_company_id =",2079
