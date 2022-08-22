@@ -16,7 +16,7 @@ import plotly.express as px
 logfil_cloudwatch_lgsinsigh_results = './data/test_df10N.csv'
 #df23 = pd.read_csv(logfile23, header=None)
 df_friN = pd.read_csv(logfil_cloudwatch_lgsinsigh_results)
-print("zigiiiiiiii")
+#print("zigiiiiiiii")
 # print(os.getcwd())
 # print(df_friN.head())
 dash.register_page(__name__)

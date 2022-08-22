@@ -17,14 +17,17 @@ import re
 #app = Dash(external_stylesheets=[dbc.themes.FLATLY],)
 dash.register_page(__name__)
 
+# Total  Users
+# Total CareTeam (Administrator-Team-Members).
+# Total Patients.
+# Total New Patients
+# Staff-to-Patient Ratio
+# Compliance (%)
 
-df_Dashboard_data = pd.read_csv(
-    './data/df_Dashboard_data.csv')
-columns_zigi = ['date', 'clientName', 'n_AdminTeam', 'n_medTeam',
-                'n_Patients', 'n_activeForms', 'n_CompletedForms', 'totalUsers']
+df_Dashboard_data = pd.read_csv( './data/df_Dashboard_data.csv')
+columns_zigi = ['date', 'clientName', 'n_AdminTeam', 'n_medTeam', 'n_Patients', 'n_activeForms', 'n_CompletedForms', 'totalUsers']
 
-latestdate_group_df = df_Dashboard_data.groupby(
-    ['date']).get_group(('2020-12-01'))
+latestdate_group_df = df_Dashboard_data.groupby(['date']).get_group(('2020-12-01'))
 
 latestToatalUsers = latestdate_group_df['totalUsers'].sum()
 
@@ -34,12 +37,16 @@ latestToatalAdmin = latestdate_group_df['n_AdminTeam'].sum()
 
 latestToatalMed = latestdate_group_df['n_medTeam'].sum()
 
+totaCareTeam = latestToatalAdmin + latestToatalMed
+
 latestToatalActiveForms = latestdate_group_df['n_activeForms'].sum()
 
 latestToatalCompletedForms = latestdate_group_df['n_CompletedForms'].sum()
 
-latestToatal_CompLiance = (
-    (latestToatalCompletedForms/latestToatalActiveForms))
+latestToatal_CompLiance = ((latestToatalCompletedForms/latestToatalActiveForms))
+
+Staff_to_Patient = latestToatalMed/latestToatalPatients
+
 
 
 VT_img = "./assets/logo-visiontree.png"
@@ -68,6 +75,7 @@ recovered = df_global['TotalRecovered'][0]
 newrecovered = df_global['NewRecovered'][0]
 
 
+
 #code_mapping = pd.DataFrame(data)
 
 #df_world_f=pd.merge(df_countries[['Country','TotalConfirmed','TotalDeaths','TotalRecovered','CountryCode']],code_mapping, left_on = 'CountryCode',right_on = 'alpha-2',how = 'inner')
@@ -75,20 +83,8 @@ df_world_f = ""
 
 
 #################################   Functions for creating Plotly graphs and data card contents ################
-def world_map(df):
-    # fig = px.choropleth(df, locations="iso_alpha", color = "TotalConfirmed",
-    #                     hover_name= "Country",
-    #                     hover_data = ['TotalConfirmed','TotalDeaths','TotalRecovered'],
-    #                     projection="orthographic",
-    #                     color_continuous_scale=px.colors.sequential.Plasma)
-
-    # fig.update_layout(margin = dict(l=4,r=4,t=4,b=4))
-
-    #labels = ['AndersonClinic','BNI','Hospital_A','NeuroGen']
-    #values = [4500, 2500, 1053, 500]
-
-    #fig = go.Figure(data=[go.Pie(labels=labels, values=values)])
-
+def bar_plot(df):
+  
     fig = px.bar(df_Dashboard_data, x='date', y='totalUsers', color='clientName', barmode='group', text_auto='.2s',
                  title="Total User Breakdown by Client")
     fig.update_layout(margin=dict(l=20, r=20, t=35, b=20),
@@ -98,19 +94,14 @@ def world_map(df):
     return fig
     # fig.show()
 
-    return fig
-
-#
-
-
-def data_for_cases(header, latestToatalUsers, TotalCareTeam):
+def cards_contents(cardHeader, cardVlueName, cardValeu):
     card_content = [
-        dbc.CardHeader(header),
+        dbc.CardHeader(cardHeader),
 
         dbc.CardBody(
             [
                 dcc.Markdown(dangerously_allow_html=True,
-                             children=["{0} <br><sub>+{1}</sub></br>".format(latestToatalUsers, TotalCareTeam)])
+                             children=["{0} <br><sub></sub></br>".format(cardVlueName)])
 
 
             ]
@@ -127,12 +118,26 @@ body_app = dbc.Container([
 
     #dbc.Row( html.Marquee("USA, India and Brazil are top 3 countries in terms of confirmed cases"), style = {'color':'green'}),
 
-    dbc.Row([
-        dbc.Col(dbc.Card(data_for_cases("TotalUsers", f'{latestToatalUsers:,}', f'{TotalCareTeam:,}'), color='primary', style={
+    dbc.Row(
+        [
+        dbc.Col(dbc.Card(cards_contents("TotalUsers", f'{latestToatalUsers:,}', f'{latestToatalUsers:,}'), color='primary', style={
                 'text-align': 'center'}, inverse=True), xs=12, sm=12, md=4, lg=4, xl=4, style={'padding': '12px 12px 12px 12px'}),
-        dbc.Col(dbc.Card(data_for_cases("TotalPatients", f'{TotalPatients:,}', f'{newrecovered:,}'), color='success', style={
+
+        dbc.Col(dbc.Card(cards_contents("totaCareTeam", f'{totaCareTeam:,}', f'{totaCareTeam:,}'), color='success', style={
                 'text-align': 'center'}, inverse=True), xs=12, sm=12, md=4, lg=4, xl=4, style={'padding': '12px 12px 12px 12px'}),
-        dbc.Col(dbc.Card(data_for_cases("Compliance", f'{latestToatal_CompLiance :,}', f'{newdeaths:,}'), color='danger', style={'text-align': 'center'}, inverse=True), xs=12, sm=12, md=4, lg=4, xl=4, style={'padding': '12px 12px 12px 12px'})]),
+
+        dbc.Col(dbc.Card(cards_contents("TotalPatients", f'{TotalPatients :,}', f'{TotalPatients:,}'), color='danger', style={'text-align': 'center'}, inverse=True), xs=12, sm=12, md=4, lg=4, xl=4, style={'padding': '12px 12px 12px 12px'}),
+
+        dbc.Col(dbc.Card(cards_contents("Staff-to-Patien", f'{Staff_to_Patient:,}', f'{Staff_to_Patient:,}'), color='warning', style={
+                'text-align': 'center'}, inverse=True), xs=12, sm=12, md=4, lg=4, xl=4, style={'padding': '12px 12px 12px 12px'}),
+
+        dbc.Col(dbc.Card(cards_contents("totaCareTeam", f'{totaCareTeam:,}', f'{totaCareTeam:,}'), color='secondary', style={
+                'text-align': 'center'}, inverse=True), xs=12, sm=12, md=4, lg=4, xl=4, style={'padding': '12px 12px 12px 12px'}),
+
+        dbc.Col(dbc.Card(cards_contents("TotalPatients", f'{TotalPatients :,}', f'{TotalPatients:,}'), color='info', style={'text-align': 'center'}, inverse=True), xs=12, sm=12, md=4, lg=4, xl=4, style={'padding': '12px 12px 12px 12px'})        
+        ]
+            ),
+
 
     html.Br(),
     html.Br(),
@@ -143,8 +148,8 @@ body_app = dbc.Container([
     html.Br(),
     html.Br(),
 
-    dbc.Row(dbc.Col(dcc.Graph(id='pie-chart', figure=world_map(df_world_f)),
-            style={'height': '450px'}, xs=12, sm=12, md=8, lg=8, xl=8)),
+    dbc.Row(dbc.Col(dcc.Graph(id='bar-chart', figure=bar_plot(df_world_f)),
+            style={'padding': '12px 12px 12px 12px','height': '450px'}, xs=12, sm=12, md=8, lg=8, xl=8)),
 
     dbc.Row(
         dbc.Col([
