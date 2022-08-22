@@ -149,7 +149,7 @@ body_app = dbc.Container([
     html.Br(),
 
     dbc.Row(dbc.Col(dcc.Graph(id='bar-chart', figure=bar_plot(df_world_f)),
-            style={'padding': '12px 12px 12px 12px','height': '450px'}, xs=12, sm=12, md=8, lg=8, xl=8)),
+            style={'padding': '12px 12px 12px 12px','height': '450px'}, width=12)),
 
     dbc.Row(
         dbc.Col([
