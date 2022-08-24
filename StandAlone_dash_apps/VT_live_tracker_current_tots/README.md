@@ -1,6 +1,6 @@
 ![multipage-dash-app]()
 
-[<img src="./assets/img_vt_lilveTrack_dashboard.png" alt="MarineGEO circle logo" style="height: 500px; width:2000px;"/>] 
+[<img src="./assets/img_vt_liveTracker_dashboard2.png" alt="MarineGEO circle logo" style="height: 500px; width:2000px;"/>] 
 
 #  Dash Application 
 
