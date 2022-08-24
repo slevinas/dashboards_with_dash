@@ -1,6 +1,6 @@
 ![multipage-dash-app]()
 
-[<img src="./assets/img_patients_currentstate_dashboard.png" alt="MarineGEO circle logo" style="height: 250px; width:200px;"/>] 
+[<img src="./assets/img_patients_currentstate_dashboard.png" alt="MarineGEO circle logo" style="height: 250px; width:2200px;"/>] 
 
 #  Dash Application 
 
