@@ -22,5 +22,5 @@ pip install -r requirements.txt
 3. Run the application 
 
 ```
-python index.py
+python app.py
 ```
